@@ -1,74 +1,71 @@
+import { BrowserRouter, NavLink, Navigate, Route, Routes } from 'react-router-dom'
+import CrearPost from './pages/CrearPost.jsx'
+import Inicio from './pages/Inicio.jsx'
+import Login from './pages/Login.jsx'
+import MisCompaneros from './pages/MisCompaneros.jsx'
+import Publicaciones from './pages/Publicaciones.jsx'
+import Registro from './pages/Registro.jsx'
+
+function NavigationLink({ to, children, end = false }) {
+  return (
+    <NavLink
+      to={to}
+      end={end}
+      className={({ isActive }) =>
+        `flex min-w-0 items-center justify-center rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors ${
+          isActive
+            ? 'bg-blue-50 text-blue-700'
+            : 'text-slate-600 hover:bg-slate-100 hover:text-blue-700'
+        }`
+      }
+    >
+      {children}
+    </NavLink>
+  )
+}
+
 function App() {
   return (
-    <div className="flex min-h-svh items-center justify-center bg-neutral-50 px-4">
-      <main className="w-full max-w-2xl">
-        <h1 className="text-3xl font-bold tracking-tight text-neutral-900">
-          Proyecto base limpio con Tailwind CSS
-        </h1>
-        <p className="mt-2 text-neutral-600">
-          Para comenzar, crea la siguiente estructura dentro de{' '}
-          <code className="rounded bg-neutral-200 px-1.5 py-0.5 text-sm">src/</code>:
-        </p>
+    <BrowserRouter>
+      <div className="min-h-screen bg-[#f0f2f5] text-slate-800">
+        <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
+          <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+            <NavLink to="/" className="flex items-center gap-2 text-xl font-extrabold tracking-tight text-blue-700">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-lg text-white">M</span>
+              <span>Mi Clase</span>
+            </NavLink>
 
-        <div className="mt-6 space-y-4">
-          <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-            <h2 className="font-semibold text-neutral-900">
-              <code className="rounded bg-violet-100 px-1.5 py-0.5 text-sm text-violet-700">src/pages/</code>
-            </h2>
-            <p className="mt-1.5 text-sm text-neutral-600">
-              Componentes que representan una página completa de la app
-              (Inicio, Perfil, Contacto, etc.).
-            </p>
-          </section>
+            <nav aria-label="Navegación principal" className="grid grid-cols-4 gap-1 sm:flex sm:items-center">
+              <NavigationLink to="/" end>Inicio</NavigationLink>
+              <NavigationLink to="/posts">Publicaciones</NavigationLink>
+              <NavigationLink to="/mis-companeros">Compañeros</NavigationLink>
+              <NavigationLink to="/login">Ingresar</NavigationLink>
+            </nav>
+          </div>
+        </header>
 
-          <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-            <h2 className="font-semibold text-neutral-900">
-              <code className="rounded bg-violet-100 px-1.5 py-0.5 text-sm text-violet-700">src/services/</code>
-            </h2>
-            <p className="mt-1.5 text-sm text-neutral-600">
-              Funciones que se comunican con el backend (fetch/axios). Los
-              componentes las llaman para obtener o enviar datos.
-            </p>
-          </section>
+        <main className="mx-auto min-h-[calc(100vh-132px)] max-w-7xl px-3 py-6 sm:px-6 sm:py-8">
+          <Routes>
+            <Route path="/" element={<Inicio />} />
+            <Route path="/inicio" element={<Inicio />} />
+            <Route path="/posts" element={<Publicaciones />} />
+            <Route path="/publicaciones" element={<Navigate to="/posts" replace />} />
+            <Route path="/crear-post" element={<CrearPost />} />
+            <Route path="/mis-companeros" element={<MisCompaneros />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/registro" element={<Registro />} />
+            <Route path="/registrarme" element={<Registro />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
 
-          <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-            <h2 className="font-semibold text-neutral-900">
-              <code className="rounded bg-violet-100 px-1.5 py-0.5 text-sm text-violet-700">.env</code> — URL del backend
-            </h2>
-            <p className="mt-1.5 text-sm text-neutral-600">
-              Crea un archivo <code className="rounded bg-neutral-200 px-1.5 py-0.5">.env</code> en la
-              raíz del proyecto con la URL del backend:
-            </p>
-            <pre className="mt-3 overflow-x-auto rounded-lg bg-neutral-900 p-3 text-sm text-neutral-100">
-              VITE_API_URL=http://localhost:3000/api
-            </pre>
-            <p className="mt-3 text-sm text-neutral-600">
-              En los servicios se lee con{' '}
-              <code className="rounded bg-neutral-200 px-1.5 py-0.5">import.meta.env.VITE_API_URL</code>.
-              Las variables deben partir con <code className="rounded bg-neutral-200 px-1.5 py-0.5">VITE_</code> y
-              hay que reiniciar <code className="rounded bg-neutral-200 px-1.5 py-0.5">npm run dev</code> si la cambias.
-            </p>
-          </section>
-
-          <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-            <h2 className="font-semibold text-neutral-900">Rutas y menú</h2>
-            <p className="mt-1.5 text-sm text-neutral-600">
-              Para navegar entre páginas instala{' '}
-              <code className="rounded bg-neutral-200 px-1.5 py-0.5">react-router-dom</code>:
-            </p>
-            <pre className="mt-3 overflow-x-auto rounded-lg bg-neutral-900 p-3 text-sm text-neutral-100">
-              npm install react-router-dom
-            </pre>
-            <p className="mt-3 text-sm text-neutral-600">
-              Luego envuelve la app con <code className="rounded bg-neutral-200 px-1.5 py-0.5">BrowserRouter</code>,
-              define tus <code className="rounded bg-neutral-200 px-1.5 py-0.5">Routes</code> y
-              crea un menú básico con <code className="rounded bg-neutral-200 px-1.5 py-0.5">NavLink</code> en
-              el header.
-            </p>
-          </section>
-        </div>
-      </main>
-    </div>
+        <footer className="border-t border-slate-200 bg-white py-4 text-center text-sm text-slate-500">
+          <div className="mx-auto max-w-7xl px-5">
+            Proyecto de Tecnologías Web
+          </div>
+        </footer>
+      </div>
+    </BrowserRouter>
   )
 }
 
